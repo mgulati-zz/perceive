@@ -23,6 +23,7 @@
 
 			app.keydown(function(e){
 				e = e || window.event;
+				if (pressed[e.keyCode] == 1) return;
 				pressed[e.keyCode] = 1;
 				keyProcess();
 			});
