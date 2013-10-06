@@ -19,6 +19,8 @@
 			pressed[right] = 0;
 			pressed[down] = 0;
 
+			var curRequest = null;
+
 			app.keydown(function(e){
 				e = e || window.event;
 				pressed[e.keyCode] = 1;
@@ -37,7 +39,6 @@
 				keyState += "&R=" + pressed[right];
 				keyState += "&B=" + pressed[down];
 				
-				var curRequest = null;
 				if (curRequest) curRequest.abort();
 				curRequest = $.post("https://agent.electricimp.com/iaHQU6Z6CRw3?" + keyState);
 			}
