@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>HapticWrist</title>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script>
+		$(document).ready(function() {	
+			app = $(document);
+			var pressed={};
+
+			left = 37;
+			up = 38;
+			right = 39;
+			down = 40;
+
+			app.keydown(function(e){
+				e = e || window.event;
+				pressed[e.keyCode] = true;
+				keyProcess();
+			});
+
+			app.keyup(function(e){
+				e = e || window.event;
+				delete pressed[e.keyCode];
+				keyProcess();
+			});
+
+			keyProcess = function() {
+				keyState = "";
+				if (pressed[up]) keyState += "up";
+				if (pressed[left]) keyState += "left";
+				if (pressed[right]) keyState += "right";
+				if (pressed[down]) keyState += "down";
+				$('body').text(keyState);
+			}
+		});
+	</script>
+</head>
+<body>
+</body>
+</html>
