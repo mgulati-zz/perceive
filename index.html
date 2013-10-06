@@ -1,52 +1,100 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<title>HapticWrist</title>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script>
-		$(document).ready(function() {	
-			app = $(document);
-			var pressed={};
+	<head>
+		<title>Perceive - Haptic Feedback Sleeve</title>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		
+		<script>
+			$(document).ready(function() {	
+				app = $(document);
+				var pressed={};
 
-			left = 37;
-			up = 38;
-			right = 39;
-			down = 40;
+				left = 37;
+				up = 38;
+				right = 39;
+				down = 40;
 
-			pressed[up] = 0;
-			pressed[left] = 0;
-			pressed[right] = 0;
-			pressed[down] = 0;
+				pressed[up] = 0;
+				pressed[left] = 0;
+				pressed[right] = 0;
+				pressed[down] = 0;
 
-			var curRequest = null;
+				var curRequest = null;
 
-			app.keydown(function(e){
-				e = e || window.event;
-				if (pressed[e.keyCode] == 1) return;
-				pressed[e.keyCode] = 1;
-				keyProcess();
+				app.keydown(function(e){
+					e = e || window.event;
+					if (pressed[e.keyCode] == 1) return;
+					pressed[e.keyCode] = 1;
+					keyProcess();
+				});
+
+				app.keyup(function(e){
+					e = e || window.event;
+					pressed[e.keyCode] = 0;
+					keyProcess();
+				});
+
+				keyProcess = function() {
+					keyState = "T=" + pressed[up];
+					keyState += "&L=" + pressed[left];
+					keyState += "&R=" + pressed[right];
+					keyState += "&B=" + pressed[down];
+
+					radius = pressed[left]? "0% " : "50% ";
+					radius += pressed[up]? "0% " : "50% ";
+					radius += pressed[right]? "0% " : "50% ";
+					radius += pressed[down]? "0% " : "50% ";
+					$('#awesome').css('border-radius',radius);
+					
+					if (curRequest) curRequest.abort();
+					curRequest = $.post("https://agent.electricimp.com/iaHQU6Z6CRw3?" + keyState);
+				}
+
 			});
+		</script>
 
-			app.keyup(function(e){
-				e = e || window.event;
-				pressed[e.keyCode] = 0;
-				keyProcess();
-			});
+		<style>
+		 #header{
+		 	margin-bottom: 200px;
+		 	margin-top: 50px;
+		 }
 
-			keyProcess = function() {
-				keyState = "T=" + pressed[up];
-				keyState += "&L=" + pressed[left];
-				keyState += "&R=" + pressed[right];
-				keyState += "&B=" + pressed[down];
-				
-				if (curRequest) curRequest.abort();
-				curRequest = $.post("https://agent.electricimp.com/iaHQU6Z6CRw3?" + keyState);
-			}
+		 h1 {
+		 	text-align: center; 
+		 	font-size: 50px; 
+		 	font-weight: lighter!important;
+		 	color: #eee;
+		 }
 
-		});
-	</script>
-</head>
-<body>
-</body>
+		 #awesome {
+		 	border: 10px #eeeeee double; 
+		 	border-radius: 50% 50% 50% 50%; 
+			width: 390px;
+			height: 390px; 
+			text-align: center; 
+			margin-left: auto; 
+			margin-right: auto; 
+			-webkit-transform:rotate(-45deg);
+			transition: border-radius .5s;
+			-webkit-transition: border-radius .5s; /* Safari */
+		 }
+
+		 body {
+		 	background-image:url('pikcha.jpg');
+		 	background-size: cover;
+		 }
+
+		</style>
+
+	</head>
+	
+	<body>
+		<div id="header">
+			<h1>Perceive</h1>
+		</div>
+		<div id="awesome">
+		</div>
+	</body>
+
 </html>
