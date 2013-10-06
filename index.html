@@ -14,26 +14,34 @@
 			right = 39;
 			down = 40;
 
+			pressed[up] = 0;
+			pressed[left] = 0;
+			pressed[right] = 0;
+			pressed[down] = 0;
+
 			app.keydown(function(e){
 				e = e || window.event;
-				pressed[e.keyCode] = true;
+				pressed[e.keyCode] = 1;
 				keyProcess();
 			});
 
 			app.keyup(function(e){
 				e = e || window.event;
-				delete pressed[e.keyCode];
+				pressed[e.keyCode] = 0;
 				keyProcess();
 			});
 
 			keyProcess = function() {
-				keyState = "";
-				if (pressed[up]) keyState += "up";
-				if (pressed[left]) keyState += "left";
-				if (pressed[right]) keyState += "right";
-				if (pressed[down]) keyState += "down";
-				$('body').text(keyState);
+				keyState = "T=" + pressed[up];
+				keyState += "&L=" + pressed[left];
+				keyState += "&R=" + pressed[right];
+				keyState += "&B=" + pressed[down];
+				
+				var curRequest = null;
+				if (curRequest) curRequest.abort();
+				curRequest = $.post("https://agent.electricimp.com/iaHQU6Z6CRw3?" + keyState);
 			}
+
 		});
 	</script>
 </head>
