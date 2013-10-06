@@ -14,11 +14,13 @@
 				up = 38;
 				right = 39;
 				down = 40;
+				space = 32;
 
 				pressed[up] = 0;
 				pressed[left] = 0;
 				pressed[right] = 0;
 				pressed[down] = 0;
+				pressed[space] = 0;
 
 				var curRequest = null;
 
@@ -36,15 +38,15 @@
 				});
 
 				keyProcess = function() {
-					keyState = "T=" + pressed[up];
-					keyState += "&L=" + pressed[left];
-					keyState += "&R=" + pressed[right];
-					keyState += "&B=" + pressed[down];
+					keyState = "T=" + Math.max(pressed[up], pressed[space]);
+					keyState += "&L=" + Math.max(pressed[left], pressed[space]);
+					keyState += "&R=" + Math.max(pressed[right], pressed[space]);
+					keyState += "&B=" + Math.max(pressed[down], pressed[space]);
 
-					radius = pressed[left]? "0% " : "50% ";
-					radius += pressed[up]? "0% " : "50% ";
-					radius += pressed[right]? "0% " : "50% ";
-					radius += pressed[down]? "0% " : "50% ";
+					radius = Math.max(pressed[left], pressed[space])? "10% " : "50% ";
+					radius += Math.max(pressed[up], pressed[space])? "10% " : "50% ";
+					radius += Math.max(pressed[right], pressed[space])? "10% " : "50% ";
+					radius += Math.max(pressed[down], pressed[space])? "10% " : "50% ";
 					$('#awesome').css('border-radius',radius);
 					
 					if (curRequest) curRequest.abort();
@@ -56,22 +58,18 @@
 
 		<style>
 		 #header{
-		 	margin-bottom: 200px;
-		 	margin-top: 50px;
-		 }
-
-		 h1 {
-		 	text-align: center; 
-		 	font-size: 50px; 
-		 	font-weight: lighter!important;
-		 	color: #eee;
+		 	height: 132px;
+			width: 414px;
+			margin: 50px auto 110px auto;
+		 	background-image: url('header.png');
+		 	background-size: cover;
 		 }
 
 		 #awesome {
 		 	border: 10px #eeeeee double; 
 		 	border-radius: 50% 50% 50% 50%; 
-			width: 390px;
-			height: 390px; 
+			width: 350px;
+			height: 350px; 
 			text-align: center; 
 			margin-left: auto; 
 			margin-right: auto; 
@@ -90,11 +88,8 @@
 	</head>
 	
 	<body>
-		<div id="header">
-			<h1>Perceive</h1>
-		</div>
-		<div id="awesome">
-		</div>
+		<div id="header"></div>
+		<div id="awesome"></div>
 	</body>
 
 </html>
