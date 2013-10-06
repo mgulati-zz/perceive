@@ -9,6 +9,7 @@
 			$(document).ready(function() {	
 				app = $(document);
 				var pressed={};
+				var instructions = false;
 
 				left = 37;
 				up = 38;
@@ -38,6 +39,11 @@
 				});
 
 				keyProcess = function() {
+					if(!instructions && $.inArray(window.event.keyCode,[up, left, right, down, space]) > -1) {
+						$("#instructions").fadeOut();
+						instructions = true;
+					}
+
 					keyState = "T=" + Math.max(pressed[up], pressed[space]);
 					keyState += "&L=" + Math.max(pressed[left], pressed[space]);
 					keyState += "&R=" + Math.max(pressed[right], pressed[space]);
@@ -78,6 +84,13 @@
 			-webkit-transition: border-radius .5s; /* Safari */
 		 }
 
+		 #instructions {
+		 	-webkit-transform: rotate(45deg) !important;
+			margin: 168px 0px 0px 0px;
+			color: white;
+			font-family: helvetica;
+		 }
+
 		 body {
 		 	background-image:url('pikcha.jpg');
 		 	background-size: cover;
@@ -89,7 +102,11 @@
 	
 	<body>
 		<div id="header"></div>
-		<div id="awesome"></div>
+		<div id="awesome">
+			<div id="instructions">
+				Use the arrow keys or space
+			</div>
+		</div>
 	</body>
 
 </html>
